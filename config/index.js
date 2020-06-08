@@ -19,6 +19,14 @@ module.exports = {
           '^/api': '' //重写接口
         }
       },
+      '/novel': {
+        target: 'http://localhost/novel', //目标接口域名
+        secure: false, // 如果是https接口，需要配置这个参数
+        changeOrigin: true, //是否跨域
+        pathRewrite: {
+          '^/novel': '' //重写接口
+        }
+      },
       cssSourceMap: false
     },
 
@@ -52,8 +60,8 @@ module.exports = {
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsSubDirectory: 'vue',
+    assetsPublicPath: './',
 
     /**
      * Source Maps

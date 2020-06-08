@@ -9,7 +9,8 @@ Vue.config.productionTip = false
 
 Vue.prototype.$axios = Axios
 /* eslint-disable no-new */
-Vue.prototype.HOST = '/api'
+Vue.prototype.HOST = '/novel'
+// Vue.prototype.HOST = '/api'
 // Axios.defaults.baseURL = '/api'
 new Vue({
   el: '#app',
