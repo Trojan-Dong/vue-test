@@ -8,13 +8,13 @@
         </li>
       </ol>
     </div>
-    <div style="clear: both; display: none;">
+    <div style="clear:both" v-bind:style="{display: isDisplay}">
       <button v-on:click="switchPage(currentPage-1)">上一页</button>
       <button v-on:click="switchPage(currentPage+1)">下一页</button>
       <span>当前第{{currentPage}}页</span>
       <span>共{{totalPage}}页</span>
       <br />
-      <button>跳转到</button><input type="text" style="width: 35%;" />页
+      <button v-on:click="goToPage()">跳转到</button><input type="text" style="width: 35%;" v-model="currentPage" />页
     </div>
   </div>
 </template>
@@ -35,32 +35,44 @@
     },
     methods: {
       switchPageto: function(novelInfo) {
-        // console.log(novelInfo)
         this.$router.push({
-          name: 'chapter',
-          params: {
-            novelInfo: novelInfo
+          path: 'chapter',
+          query: {
+            name: novelInfo.nName,
+            url: encodeURI(novelInfo.nURL)
           }
         })
+      },
+      switchPage: function(currentPage) {
+        this.currentPage = currentPage
+      },
+      getDirectory: function() {
+        var app = this;
+        var url = this.HOST + '/getDirectory';
+        // console.log(url)
+        axios
+          .post(url, {
+            "isFirst": app.isFirst
+          })
+          .then(function(response) {
+            console.log(response.data)
+            var data = response.data;
+            app.novelInfos = data.novelList;
+            app.isFirst=false;
+            app.totalPage = Math.ceil(data.totalCount / app.pageSize);
+            app.isDisplay = "block";
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
+
     },
     mounted() {
-      var app = this;
-      var url = this.HOST + '/getDirectory';
-      console.log(url)
-      axios
-        .post(url, {
-          "isFirst": this.isFirst
-        })
-        .then(function(response) {
-          console.log(response.data)
-          var data = response.data;
-          app.novelInfos = data.novelList;
-          app.totalPage = Math.ceil(data.totalCount / app.pageSize);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      this.getDirectory();
+      setTimeout(() =>{
+          this.getDirectory();
+      },1000);
     }
   };
 </script>

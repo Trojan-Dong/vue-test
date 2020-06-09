@@ -1,8 +1,5 @@
 <template>
-  <div class="hello">
 
-    <button v-on:click="testClic">test</button>
-  </div>
 </template>
 
 <script>
@@ -13,16 +10,14 @@
         msg: 'Welcome to Your Vue.js App'
       }
     },
-    methods: {
-      testClic: function() {
-        this.$router.push('/index')
-      }
-    }
+   
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+
   h1,
   h2 {
     font-weight: normal;

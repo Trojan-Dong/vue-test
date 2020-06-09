@@ -14,7 +14,7 @@
       <span>当前第{{currentPage}}页</span>
       <span>共{{totalPage}}页</span>
       <br />
-      <button>跳转到</button><input type="text" style="width: 35%;" />页
+      <button v-on:click="goToPage()">跳转到</button><input type="text" style="width: 35%;" v-model="currentPage" />页
     </div>
   </div>
 </template>
@@ -36,21 +36,28 @@
 
     },
     methods: {
-      switchPageto: function() {
-        // this.$router.push('/test')
+      switchPageto: function(chapter) {
+        this.$router.push({
+          path: 'Content',
+          query: {
+            url: encodeURI(chapter.chapterUrl)
+          }
+        })
+      },
+      switchPage: function(currentPage) {
+        this.currentPage = currentPage
       }
+
     },
     mounted() {
       var app = this;
-
-      var info = this.$route.params.novelInfo;
-      console.log(info);
+      var info = this.$route.query;
+      console.log(info)
       var url = this.HOST + '/getChapter';
-      console.log(url)
       axios
         .post(url, {
-          "nName": info.nName,
-          "nURL": info.nURL
+          "nName": info.name,
+          "nURL": decodeURI(info.url)
         })
         .then(function(response) {
           console.log(response.data)
@@ -75,4 +82,6 @@
     margin-bottom: 15px;
     color: #000000;
   }
+
+ 
 </style>
