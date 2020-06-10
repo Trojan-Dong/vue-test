@@ -8,13 +8,14 @@
         </li>
       </ol>
     </div>
-    <div style="clear: both; display: none;" v-bind:style="{ display: isDisplay}">
-      <button v-on:click="switchPage(currentPage-1)">上一页</button>
-      <button v-on:click="switchPage(currentPage+1)">下一页</button>
-      <span>当前第{{currentPage}}页</span>
-      <span>共{{totalPage}}页</span>
-      <br />
-      <button v-on:click="goToPage()">跳转到</button><input type="text" style="width: 35%;" v-model="currentPage" />页
+    <div class="footNav-page" style="clear: both; " v-bind:style="{ display: isDisplay}">
+      <table>
+        <tr>
+          <td><button v-on:click="switchPage(currentPage-1)">上一页</button></td>
+          <td>第<input type="text" style="width: 25%;" v-model="currentPage" /><span>{{totalPage}}页</span></td>
+          <td><button v-on:click="switchPage(currentPage+1)">下一页</button></td>
+        </tr>
+      </table>
     </div>
   </div>
 </template>
@@ -30,7 +31,7 @@
         isFirst: true,
         chapterInfos: null,
         currentPage: 1,
-        pageSize: 20,
+        pageSize: 50,
         isDisplay: "none"
       }
 
@@ -60,7 +61,7 @@
           "nURL": decodeURI(info.url)
         })
         .then(function(response) {
-          console.log(response.data)
+          // console.log(response.data)
           var data = response.data;
           app.chapterInfos = data.chapterInfo;
           app.author = data.author
@@ -75,13 +76,35 @@
 </script>
 
 <style>
-  .dirList {
-    list-style: none;
-    float: left;
-    width: 49%;
-    margin-bottom: 15px;
-    color: #000000;
+  #body {
+    margin-bottom: 20%;
   }
 
- 
+  .dirList {
+    list-style: none;
+    width: 80%;
+    margin: 1rem 0 1rem 20%;
+    color: #000000;
+    text-align: left;
+    /* padding: 0px 30% */
+  }
+
+  .footNav-page table {
+    width: 100%;
+    border-spacing: 2%;
+  }
+
+  .footNav-page td {
+    display: inline-block;
+    background-color: #FFFFFF;
+    width: 35%;
+  }
+
+  .footNav-page button {
+    width: 100%;
+  }
+
+  .footNav-page td:nth-child(2) {
+    width: 25%;
+  }
 </style>

@@ -15,7 +15,7 @@
             </span></td>
         </tr>
         <tr>
-          <td><span>书<br />架
+          <td><span v-on:click="toBookShelf()">书<br />架
             </span></td>
         </tr>
       </table>
@@ -42,7 +42,7 @@
     <h1>{{chapterName}}</h1>
     <p id="content" class="content" v-html="content" v-bind:style="{lineHeight: fontSize*multLine+'rem',
     fontSize: fontSize+'rem'}"></p>
-    <div id="footNav" v-bind:style="{ display: isDisplay}">
+    <div id="footNav-content" v-bind:style="{ display: isDisplay}">
       <span v-on:click="switchPageto(preChapterUrl,false)">上一章</span>
       <!-- <span v-on:click="switchPageto(chapterListUrl,true)">目录</span>
       <span v-on:click="goToIndex()">首页</span> -->
@@ -65,7 +65,7 @@
         chapterListUrl: '',
         nextChapterUrl: '',
         fontSize: 1.2,
-        multLine: 2,
+        multLine: 2.5,
         settingDisplay: "none"
       }
 
@@ -129,13 +129,16 @@
       },
       cancel: function() {
         this.settingDisplay = "none"
+      },
+      toBookShelf: function() {
+        this.$router.push("/bookShelf")
       }
 
     },
     mounted() {
       var app = this;
       var info = this.$route.query;
-      console.log(info)
+      // console.log(info)
       var url = this.HOST + '/getNovelContent';
       axios
         .post(url, {
@@ -159,8 +162,7 @@
 
 <style>
   .content {
-    margin: 0px 10%;
-
+    margin: 0px 5% 0px 10%;
     text-align: left;
   }
 
@@ -168,18 +170,17 @@
     background: #FFFFCC;
   }
 
-  #footNav {
+  #footNav-content {
     display: none;
   }
 
   .navTable {
-
     margin: 0;
     padding: 0;
     font-style: italic;
   }
 
-  table {
+  .navTable table {
     margin-left: 0;
     border-spacing: 0.5rem;
   }
@@ -200,16 +201,16 @@
 
   }
 
-  table td {
+  .setting table td {
     text-align-last: justify;
   }
 
-  #footNav {
+  #footNav-content {
     font-size: 1.5rem;
     color: #2C3E50;
   }
 
-  #footNav span {
+  #footNav-content span {
     display: inline-block;
     width: 45%;
     height: 1rem;

@@ -7,6 +7,7 @@ import Chapter from '@/components/Chapter' //章节目录
 import Content from '@/components/Content' ///内容页
 import BookShelf from '@/components/BookShelf' //书架
 import Login from '@/components/Login' //登录
+import My from '@/components/info/My' //用户信息
 
 
 Vue.use(Router)
@@ -45,5 +46,9 @@ export default new Router({
     path: '/login',
     name: 'login',
     component: Login
+  }, {
+    path: '/my',
+    name: 'my',
+    component: My
   }]
 })

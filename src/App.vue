@@ -1,31 +1,49 @@
 <template>
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
-    <div id="footNav">
+    <div id="footNav" v-if="displayNav">
       <table>
         <tr>
-          <td v-on:click="toIndex()" class="icon indexIcon"> <img src="./assets/index.png"> </td>
-          <td v-on:click="toBookShelf()" class="icon bookIcon"> <img src="./assets/book.png"> </td>
-          <td v-on:click="toMyInfo()" class="icon infoIcon"> <img src="./assets/login.png"> </td>
+          <td v-on:click="toIndex()" class="icon indexIcon"><img src="./assets/index.png"></td>
+          <td v-on:click="toBookShelf()" class="icon bookIcon"><img src="./assets/book.png"></td>
+          <td v-on:click="toMyInfo()" class="icon infoIcon"><img src="./assets/login.png"></td>
         </tr>
       </table>
     </div>
-    <router-view />
+    <router-view/>
   </div>
 </template>
-
 <script>
+  // import VConsole from 'vconsole'
+  // let vConsole = new VConsole()
   export default {
     name: 'App',
+    data() {
+      return {
+        displayNav: true
+      }
+    },
     methods: {
-      toIndex: function() {
-        this.$router.push('/index')
+      toIndex: function () {
+        this.$router.push("/index");
       },
-      toBookShelf: function() {
-        this.$router.push("/bookShelf")
+      toBookShelf: function () {
+        this.$router.push("/bookShelf");
       },
-      toMyInfo: function() {
-
+      toMyInfo: function () {
+        this.$router.push("/my");
+      }
+    },
+    mounted() {
+      // console.log('Hello world');
+    },
+    watch: {
+      $route(e) {
+        if (e.name == 'content') {
+          this.displayNav = false;
+        } else {
+          this.displayNav = true;
+        }
       }
     }
   }
