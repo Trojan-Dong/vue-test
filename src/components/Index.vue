@@ -1,9 +1,14 @@
 <template>
   <div id="body">
+    <div class="search">
+      <input type="text" name="keyWord"  value="">
+      <button v-on:click="search()">搜索</button>
+    </div>
     <div>
       <ol>
-        <li class="dirList" v-for="(novelInfo,index) in novelInfos" v-bind:key="index" v-if="index>((currentPage-1)*pageSize)&&index<currentPage*pageSize"
-          v-on:click="switchPageto(novelInfo)">
+        <li class="dirList" v-for="(novelInfo,index) in novelInfos" v-bind:key="index"
+            v-if="index>((currentPage-1)*pageSize)&&index<currentPage*pageSize"
+            v-on:click="switchPageto(novelInfo)">
           <span> {{ novelInfo.nName }} </span>
         </li>
       </ol>
@@ -11,9 +16,13 @@
     <div class="footNav-page" style="clear: both; " v-bind:style="{ display: isDisplay}">
       <table>
         <tr>
-          <td><button v-on:click="switchPage(currentPage-1)">上一页</button></td>
-          <td>第<input type="text" style="width: 25%;" v-model="currentPage" /><span>{{totalPage}}页</span></td>
-          <td><button v-on:click="switchPage(currentPage+1)">下一页</button></td>
+          <td>
+            <button v-on:click="switchPage(currentPage-1)">上一页</button>
+          </td>
+          <td>第<input type="text" style="width: 25%;" v-bind:value="currentPage" v-on:blur="switchPage(currentPage)"/><span>{{totalPage}}页</span></td>
+          <td>
+            <button v-on:click="switchPage(currentPage+1)">下一页</button>
+          </td>
         </tr>
       </table>
     </div>
@@ -21,6 +30,7 @@
 </template>
 <script>
   import axios from 'axios';
+
   export default {
     name: 'Index',
     data() {
@@ -35,7 +45,7 @@
 
     },
     methods: {
-      switchPageto: function(novelInfo) {
+      switchPageto: function (novelInfo) {
         this.$router.push({
           path: 'chapter',
           query: {
@@ -44,10 +54,10 @@
           }
         })
       },
-      switchPage: function(currentPage) {
+      switchPage: function (currentPage) {
         this.currentPage = currentPage
       },
-      getDirectory: function() {
+      getDirectory: function () {
         var app = this;
         var url = this.HOST + '/getDirectory';
         // console.log(url)
@@ -55,7 +65,7 @@
           .post(url, {
             "isFirst": app.isFirst
           })
-          .then(function(response) {
+          .then(function (response) {
             // console.log(response.data)
             var data = response.data;
             app.novelInfos = data.novelList;
@@ -63,9 +73,20 @@
             app.totalPage = Math.ceil(data.totalCount / app.pageSize);
             app.isDisplay = "block";
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error);
           });
+      },
+      search:function () {
+        var app=this;
+        var keyword=$("input[name='keyWord']")[0].value;
+        axios.post( this.HOST+'/searchNovel', {"nName":keyword}).then(function(res) {
+          app.novelInfos=res.data;
+          app.isDisplay='block'
+        }).catch(function(error) {
+          console.log(error);
+          alert(error);
+        });
       }
 
     },
@@ -93,7 +114,6 @@
 
   .footNav-page table {
     width: 100%;
-    border-spacing: 2%;
   }
 
   .footNav-page td {
