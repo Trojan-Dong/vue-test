@@ -72,7 +72,7 @@
     },
     methods: {
       switchPageto: function(url) {
-        alert("a");
+        console.log("------a--------");
         var path = "";
         if (url.startsWith(this.sourceUrl)) {
           path = "Chapter"
