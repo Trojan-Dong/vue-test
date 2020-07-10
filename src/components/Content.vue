@@ -71,8 +71,8 @@
 
     },
     methods: {
-      switchPageto: function(url) {
-        console.log("跳转到"+url);
+      switchPageto: function(url,isDir) {
+        console.log("跳转到:"+url);
         var path = "";
         if (url.startsWith(this.sourceUrl)) {
           path = "Chapter"
