@@ -72,7 +72,7 @@
     },
     methods: {
       switchPageto: function(url) {
-        console.log("------a--------");
+        console.log("跳转到"+url);
         var path = "";
         if (url.startsWith(this.sourceUrl)) {
           path = "Chapter"
