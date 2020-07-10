@@ -90,7 +90,8 @@
             url: url
           }
         });
-        this.$router.go(0);
+        console.log(this.$router);
+        window.location.reload();
       },
       goToIndex: function() {
         this.$router.push('/index')
