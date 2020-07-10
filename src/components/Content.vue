@@ -71,7 +71,7 @@
 
     },
     methods: {
-      switchPageto: function(url,isDir) {
+      switchPageto: function(url) {
         console.log("跳转到:"+url);
         var path = "";
         if (url.startsWith(this.sourceUrl)) {
@@ -83,7 +83,6 @@
           } else {
             path = "Content"
           }
-
         }
         this.$router.push({
           path: path,
@@ -91,7 +90,7 @@
             url: url
           }
         });
-        this.$router.go(0);
+        this.reload();
       },
       goToIndex: function() {
         this.$router.push('/index')
