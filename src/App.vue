@@ -39,7 +39,7 @@
     },
     watch: {
       $route(e) {
-        if (e.name == 'content') {
+        if (e.name == 'content' || e.name == 'contentTemp') {
           this.displayNav = false;
         } else {
           this.displayNav = true;

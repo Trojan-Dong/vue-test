@@ -5,6 +5,7 @@ import Test from '@/components/Test' //测试页
 import Index from '@/components/Index' //首页
 import Chapter from '@/components/Chapter' //章节目录
 import Content from '@/components/Content' ///内容页
+import ContentTemp from '@/components/ContentTemp' ///内容页
 import BookShelf from '@/components/BookShelf' //书架
 import Login from '@/components/Login' //登录
 import My from '@/components/info/My' //用户信息
@@ -38,6 +39,10 @@ export default new Router({
     path: '/content',
     name: 'content',
     component: Content
+  }, {
+    path: '/contentTemp',
+    name: 'contentTemp',
+    component: ContentTemp
   }, {
     path: '/bookShelf',
     name: 'bookShelf',
