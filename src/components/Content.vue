@@ -3,19 +3,19 @@
     <div id="nav" style="position: fixed;width: 2rem;top: 45%;left: 0;">
       <table class="navTable">
         <tr>
-          <td><span v-on:click="goToIndex()">首<br />页
+          <td><span v-on:click="goToIndex()">首<br/>页
             </span></td>
         </tr>
         <tr>
-          <td><span v-on:click="switchPageto(chapterListUrl,true)">目<br />录
+          <td><span v-on:click="switchPageto(chapterListUrl,true)">目<br/>录
             </span></td>
         </tr>
         <tr>
-          <td><span v-on:click="setting()">设<br />置
+          <td><span v-on:click="setting()">设<br/>置
             </span></td>
         </tr>
         <tr>
-          <td><span v-on:click="toBookShelf()">书<br />架
+          <td><span v-on:click="toBookShelf()">书<br/>架
             </span></td>
         </tr>
       </table>
@@ -25,7 +25,7 @@
         <tr>
           <td><span v-on:click="changeSize('sub','font')">-</span></td>
           <td>字体大小</td>
-          <td> <span v-on:click="changeSize('add','font')">+</span></td>
+          <td><span v-on:click="changeSize('add','font')">+</span></td>
         </tr>
         <tr>
           <td><span v-on:click="changeSize('sub','line')">-</span></td>
@@ -54,6 +54,7 @@
 <script>
   import axios from 'axios';
   import $ from 'jquery';
+
   export default {
     name: 'Content',
     data() {
@@ -71,30 +72,48 @@
 
     },
     methods: {
-      switchPageto: function(url) {
-        console.log("跳转到:"+url);
+      switchPageto: function (url) {
+        console.log("跳转到:" + url);
         var path = "";
-        if (url.startsWith(this.sourceUrl)) {
+        if (url.startsWith(this.sourceUrl) || url == this.chapterListUrl) {
           path = "Chapter"
+          if(url == this.chapterListUrl){
+            url = this.sourceUrl + url;
+          }
+          this.$router.push({
+            path: path,
+            query: {
+              url: url
+            }
+          });
         } else {
-          url = this.sourceUrl + url;
-          if (url == this.chapterListUrl) {
-            path = "Chapter"
-          } else {
-            path = "ContentTemp"
-          }
+          var app = this;
+          var info = this.$route.query;
+          // console.log(info)
+          var api = this.HOST + '/getContentByUrl';
+          axios
+            .post(api, {
+              "chapterUrl": decodeURI( this.sourceUrl + url)
+            })
+            .then(function (response) {
+              var data = response.data;
+              app.content = data.content.replace(/<br\s*\/>/g, 'temp').replace(/temp\s*temp/g, '<br />');
+              app.chapterName = data.chapterName;
+              app.preChapterUrl = data.preChapterUrl;
+              app.nextChapterUrl = data.nextChapterUrl;
+              app.chapterListUrl = data.chapterListUrl;
+              content.scrollIntoView()
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
         }
-        this.$router.push({
-          path: path,
-          query: {
-            url: url
-          }
-        });
+
       },
-      goToIndex: function() {
+      goToIndex: function () {
         this.$router.push('/index')
       },
-      setting: function() {
+      setting: function () {
         if (this.settingDisplay == "block") {
           this.settingDisplay = "none"
         } else {
@@ -102,7 +121,7 @@
         }
 
       },
-      changeSize: function(act, type) {
+      changeSize: function (act, type) {
 
         if ("sub" == act) {
           if (type == "font") {
@@ -123,13 +142,13 @@
           }
         }
       },
-      save: function() {
+      save: function () {
         this.settingDisplay = "none"
       },
-      cancel: function() {
+      cancel: function () {
         this.settingDisplay = "none"
       },
-      toBookShelf: function() {
+      toBookShelf: function () {
         this.$router.push("/bookShelf")
       }
 
@@ -143,7 +162,7 @@
         .post(url, {
           "chapterUrl": decodeURI(info.url)
         })
-        .then(function(response) {
+        .then(function (response) {
           var data = response.data;
           app.content = data.content.replace(/<br\s*\/>/g, 'temp').replace(/temp\s*temp/g, '<br />');
           app.isDisplay = "block";
@@ -152,7 +171,7 @@
           app.nextChapterUrl = data.nextChapterUrl;
           app.chapterListUrl = data.chapterListUrl;
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     }
