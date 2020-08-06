@@ -43,10 +43,10 @@
     <p id="content" class="content" v-html="content" v-bind:style="{lineHeight: fontSize*multLine+'rem',
     fontSize: fontSize+'rem'}"></p>
     <div id="footNav-content" v-bind:style="{ display: isDisplay}">
-      <button v-on:click="switchPageto(preChapterUrl,false)">上一章</button>
+      <button v-on:click="switchPageto(preChapterUrl)">上一章</button>
       <!-- <span v-on:click="switchPageto(chapterListUrl,true)">目录</span>
       <span v-on:click="goToIndex()">首页</span> -->
-      <button v-on:click="switchPageto(nextChapterUrl,false)">下一章</button>
+      <button v-on:click="switchPageto(nextChapterUrl)">下一章</button>
     </div>
   </div>
 </template>
